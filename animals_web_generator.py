@@ -15,7 +15,7 @@ def load_data(animal_name):
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"There's an error: {response.status_code}")
+        print(f"Error: {response.status_code} or no data has been returned.")
         return None
 
 
@@ -29,12 +29,15 @@ def serialize_animal(animal_obj):
     animal_info += "<p class='card__text'>\n"
 
     if "locations" in animal_obj and len(animal_obj["locations"]) > 0:
-        animal_info += f"<strong>Location:</strong> {animal_obj['locations'][0]}<br/>\n"
+        animal_info += f"<strong>Location:</strong> {animal_obj['locations']
+        [0]}<br/>\n"
     if "characteristics" in animal_obj:
         if "type" in animal_obj["characteristics"]:
-            animal_info += f"<strong>Type:</strong> {animal_obj['characteristics']['type'].capitalize()}<br/>\n"
+            animal_info += f"<strong>Type:</strong> {animal_obj['characteristics']
+            ['type'].capitalize()}<br/>\n"
         if "diet" in animal_obj["characteristics"]:
-            animal_info += f"<strong>Diet:</strong> {animal_obj['characteristics']['diet']}<br/>\n"
+            animal_info += f"<strong>Diet:</strong> {animal_obj['characteristics']
+            ['diet']}<br/>\n"
 
     animal_info += "</p>\n"
     animal_info += "</li>\n"
@@ -43,10 +46,17 @@ def serialize_animal(animal_obj):
 
 
 def create_animal_info(animals_data):
-    """Compile HTML for multiple animals from a data list."""
+    """Generates HTML for the animals list or an error message if no data is
+    available.
+    """
+    if not animals_data:
+        return ("<h2>No information available. Please search for a different "
+                "animal.</h2>")
+
     animal_info = ""
     for animal in animals_data:
         animal_info += serialize_animal(animal)
+
     return animal_info
 
 
@@ -64,14 +74,26 @@ def main():
 
         animal_info_html = create_animal_info(animals_data)
 
-        html_output = html_template.replace("__REPLACE_ANIMALS_INFO__", animal_info_html)
+        html_output = html_template.replace("__REPLACE_ANIMALS_INFO__",
+                                            animal_info_html)
 
         with open("animals.html", "w") as output_file:
             output_file.write(html_output)
 
         print("A new HTML file has been created: animals.html.")
     else:
-        print("Failed to fetch animal data from the API.")
+        error_message = (f"<h2>Unfortunately, we have no information about '"
+                         f"{animal_name}'.</h2>")
+
+        with open("animals_template.html", "r") as template_file:
+            html_template = template_file.read()
+
+        html_output = html_template.replace("__REPLACE_ANIMALS_INFO__", error_message)
+
+        with open("animals.html", "w") as output_file:
+            output_file.write(html_output)
+
+        print(f"There is no valid data found for '{animal_name}'. Error page created.")
 
 
 if __name__ == "__main__":
