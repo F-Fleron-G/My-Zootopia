@@ -16,6 +16,7 @@ def fetches_data(animal_name):
     }
     """
     url = f"https://api.api-ninjas.com/v1/animals?name={animal_name}"
+
     headers = {"X-Api-Key": API_KEY}
 
     response = requests.get(url, headers=headers)
@@ -23,5 +24,5 @@ def fetches_data(animal_name):
     if response.status_code == 200 and response.json():
         return response.json()
     else:
-        print(f"Error: {response.status_code}")
+        print(f"Error: {response.status_code} or no data has been returned.")
         return None
