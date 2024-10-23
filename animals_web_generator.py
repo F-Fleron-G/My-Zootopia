@@ -1,7 +1,7 @@
 import requests
 
 
-def load_data(animal_name="fox"):
+def load_data(animal_name):
     """Fetches data from the API for the given animal name."""
     url = f"https://api.api-ninjas.com/v1/animals?name={animal_name}"
 
@@ -11,7 +11,7 @@ def load_data(animal_name="fox"):
 
     response = requests.get(url, headers=headers)
 
-    # Checks the return status and returns JSON data
+    # Checks the return status and returns JSON data.
     if response.status_code == 200:
         return response.json()
     else:
@@ -51,22 +51,21 @@ def create_animal_info(animals_data):
 
 
 def main():
-    # Fetch animal data from the API for "Fox".
-    animals_data = load_data("fox")
 
-    # Check if the API returned data.
+    animal_name = input("Please enter the name of an animal: ").strip()
+
+    animals_data = load_data(animal_name)
+
+    # Checks if the API returned data.
     if animals_data:
-        # 1. Read the content of the template.
+
         with open("animals_template.html", "r") as template_file:
             html_template = template_file.read()
 
-        # 2. Generate a string with the animals’ data in HTML.
         animal_info_html = create_animal_info(animals_data)
 
-        # 3. Replace __REPLACE_ANIMALS_INFO__ with the generated HTML string.
         html_output = html_template.replace("__REPLACE_ANIMALS_INFO__", animal_info_html)
 
-        # 4. Write the new HTML content to a new file.
         with open("animals.html", "w") as output_file:
             output_file.write(html_output)
 
