@@ -1,6 +1,9 @@
+import os
+from dotenv import load_dotenv
 import requests
 
-API_KEY = "rhPAEnhfQ2zHQ0dQgJJ+9w==s4gOmxkzDVWokPX3"
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
 
 
 def fetches_data(animal_name):
@@ -21,7 +24,7 @@ def fetches_data(animal_name):
 
     response = requests.get(url, headers=headers)
 
-    if response.status_code == 200 and response.json():
+    if response.status_code == 200:
         return response.json()
     else:
         print(f"Error: {response.status_code} or no data has been returned.")
