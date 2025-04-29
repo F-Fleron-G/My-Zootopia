@@ -79,16 +79,3 @@ Contributions are welcome!
 ## 🐘 GitHub Topics
 Add these to your GitHub repository for better visibility and searchability:
 python animals html biodiversity education open-data api-ninjas
-
----
-
-## 🦊 Short GitHub Description
-
-> A Python app that fetches live animal data and turns it into a stunning HTML card layout. Discover habitats, diets, and more—instantly.
-
----
-
-🐾 Made with curiosity and a love for the animal kingdom.
-
-
-
